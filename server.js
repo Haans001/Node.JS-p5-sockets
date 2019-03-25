@@ -25,8 +25,8 @@ console.log("Server is running...");
 function send() {
   io.sockets.emit("get", players);
   for (var i = 0; i < lasers.length; i++) {
-    lasers[i].x += -lasers[i].velX;
-    lasers[i].y += -lasers[i].velY;
+    lasers[i].x -= lasers[i].velX;
+    lasers[i].y -= lasers[i].velY;
 
     if (offScreen(lasers[i])) {
       lasers.splice(i, 1);
