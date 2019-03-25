@@ -3,6 +3,8 @@ class Player {
     this.pos = createVector(x, y);
     this.acc = createVector();
     this.vel = createVector();
+    // this.width = width;
+    // this.height = height;
 
     this.r = r;
     this.angle = 0;
@@ -12,7 +14,7 @@ class Player {
     this.moving();
     this.update();
     this.show(name);
-    this.edges();
+    // this.edges();
   }
 
   update() {

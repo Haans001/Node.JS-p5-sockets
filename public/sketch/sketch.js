@@ -4,19 +4,19 @@ var socket;
 var players = [];
 var lasers = [];
 var input, button;
-var name;
+var name = "Ty";
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(1200, 800);
   // Tworzy przycisk oraz input tekstowy
   setInput();
   // uruchomienie socket wysyłającego na port 3000
   socket = io.connect("http://localhost:3000");
 
   // Gwiazdki <3
-  for (let i = 0; i < 300; i++) {
-    let x = random(width);
-    let y = random(height);
+  for (let i = 0; i < 2000; i++) {
+    let x = random(width * 3);
+    let y = random(height * 3);
     let w = random(1, 3);
     let a = map(w, 0.5, 3, 50, 255);
     bg[i] = new Background(x, y, a, w);
@@ -46,6 +46,7 @@ function setup() {
 }
 
 function draw() {
+  translate(width / 2 - p.pos.x, height / 2 - p.pos.y);
   background(0);
   // Gwiazdki <3
   bg.forEach(bg => {
@@ -53,6 +54,7 @@ function draw() {
   });
   // Poruszanie i rysowanie gracza
   p.run(name);
+
   // Rysowanie reszty graczy
   for (var i = 0; i < players.length; i++) {
     if (players[i].id === socket.id) continue;
@@ -89,7 +91,7 @@ function newDrawing(player) {
 function drawLaser(laser) {
   push();
   translate(laser.x, laser.y);
-  rotate(laser.angle);
+  rotate(laser.angle - PI / 2);
   stroke(232, 41, 44);
   strokeWeight(3);
   line(0, 0, 20, 0);
@@ -118,8 +120,7 @@ function setInput() {
 
 function keyPressed() {
   if (key == " ") {
-    var vel = createVector();
-    vel.add(p5.Vector.fromAngle(p.angle)).mult(7);
+    var vel = p5.Vector.fromAngle(p.angle - PI / 2).mult(15);
     var newLaser = {
       id: socket.id,
       velX: vel.x,
@@ -128,7 +129,7 @@ function keyPressed() {
       y: p.pos.y,
       angle: p.angle
     };
-    console.log(newLaser);
+
     socket.emit("addLaser", newLaser);
   }
 }
