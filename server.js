@@ -15,7 +15,7 @@ function player(id, x, y, r, angle, nick) {
 
 var app = express();
 var server = app.listen(3000);
-app.use(express.static("public/sketch"));
+app.use(express.static("C:\Users\2TI\Desktop\Node.JS-p5-sockets-master\public\sketch"));
 var io = socket(server);
 console.log("Server is running...");
 

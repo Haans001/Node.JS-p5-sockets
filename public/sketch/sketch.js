@@ -7,16 +7,16 @@ var input, button;
 var name = "Ty";
 
 function setup() {
-  createCanvas(1200, 800);
+  createCanvas(window.innerWidth, window.innerHeight);
   // Tworzy przycisk oraz input tekstowy
-  setInput();
+  // setInput();
   // uruchomienie socket wysyłającego na port 3000
-  socket = io.connect("http://localhost:3000");
+  socket = io.connect("192.168.1.103:3000");
 
   // Gwiazdki <3
   for (let i = 0; i < 2000; i++) {
-    let x = random(width * 3);
-    let y = random(height * 3);
+    let x = random(-width, width * 3);
+    let y = random(-height,height * 3);
     let w = random(1, 3);
     let a = map(w, 0.5, 3, 50, 255);
     bg[i] = new Background(x, y, a, w);
@@ -133,3 +133,10 @@ function keyPressed() {
     socket.emit("addLaser", newLaser);
   }
 }
+ var submit = document.getElementById('submit');
+ var input = document.
+ 
+ submit.addEventListener('click', function(e){
+    submit.style.opacity = 0;
+ });
+
