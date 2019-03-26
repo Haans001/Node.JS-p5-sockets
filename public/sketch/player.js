@@ -60,7 +60,7 @@ class Player {
     if (keyIsDown(RIGHT_ARROW)) this.angle += 0.1;
 
     if (keyIsDown(UP_ARROW)) {
-      this.acc.add(p5.Vector.fromAngle(this.angle - PI / 2));
+      this.acc.add(p5.Vector.fromAngle(this.angle - PI / 2).mult(0.5));
     }
   }
 }
