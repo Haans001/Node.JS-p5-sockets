@@ -15,15 +15,15 @@ function player(id, x, y, r, angle, nick) {
 
 var app = express();
 var server = app.listen(3000);
-app.use(express.static("C:\Users\2TI\Desktop\Node.JS-p5-sockets-master\public\sketch"));
+app.use(express.static("public/sketch"));
 var io = socket(server);
 console.log("Server is running...");
 
 function send() {
   io.sockets.emit("get", players);
   for (var i = 0; i < lasers.length; i++) {
-    lasers[i].x += lasers[i].velX;
-    lasers[i].y += lasers[i].velY;
+    lasers[i].x += lasers[i].velX * 0.8;
+    lasers[i].y += lasers[i].velY * 0.8;
 
     if (offScreen(lasers[i])) {
       lasers.splice(i, 1);
@@ -72,12 +72,7 @@ function randomNum() {
 }
 
 function offScreen(laser) {
-  return (
-    laser.x > 600 + this.len ||
-    laser.x < -20 ||
-    laser.y > 600 + this.len ||
-    laser.y < -20
-  );
+  return laser.x > 6000 || laser.x < -2000 || laser.y > 4000 || laser.y < -1000;
 }
 
 // Drugi server
