@@ -14,7 +14,7 @@ class Player {
     this.moving();
     this.update();
     this.show(name);
-    // this.edges();
+     this.edges();
   }
 
   update() {
@@ -25,13 +25,9 @@ class Player {
   }
 
   edges() {
-    if (this.pos.x > width) this.pos.x = 0;
-
-    if (this.pos.x < 0) this.pos.x = width;
-
-    if (this.pos.y > height) this.pos.y = 0;
-
-    if (this.pos.y < 0) this.pos.y = height;
+   this.pos.x = constrain(this.pos.x, -width+this.r, (width*3)-this.r);
+      
+   this.pos.y = constrain(this.pos.y, -height+this.r, (height*3)-this.r);
   }
 
   show(name) {
@@ -60,7 +56,7 @@ class Player {
     if (keyIsDown(RIGHT_ARROW)) this.angle += 0.1;
 
     if (keyIsDown(UP_ARROW)) {
-      this.acc.add(p5.Vector.fromAngle(this.angle - PI / 2));
+      this.acc.add(p5.Vector.fromAngle(this.angle - PI / 2).mult(0.5));
     }
   }
 }

@@ -2,6 +2,8 @@ var express = require("express");
 var socket = require("socket.io");
 var players = [];
 var lasers = [];
+var width = 1920;
+var height = 1000;
 
 function player(id, x, y, r, angle, nick) {
   this.id = id;
@@ -15,15 +17,15 @@ function player(id, x, y, r, angle, nick) {
 
 var app = express();
 var server = app.listen(3000);
-app.use(express.static("C:\Users\2TI\Desktop\Node.JS-p5-sockets-master\public\sketch"));
+app.use(express.static("public/sketch"));
 var io = socket(server);
 console.log("Server is running...");
 
 function send() {
   io.sockets.emit("get", players);
   for (var i = 0; i < lasers.length; i++) {
-    lasers[i].x += lasers[i].velX;
-    lasers[i].y += lasers[i].velY;
+    lasers[i].x += lasers[i].velX * 0.8;
+    lasers[i].y += lasers[i].velY * 0.8;
 
     if (offScreen(lasers[i])) {
       lasers.splice(i, 1);
@@ -32,7 +34,7 @@ function send() {
   io.sockets.emit("getLasers", lasers);
 }
 
-setInterval(send, 33);
+setInterval(send, 10);
 
 io.sockets.on("connection", socket => {
   console.log("New connection on id: " + socket.id);
@@ -54,7 +56,7 @@ io.sockets.on("connection", socket => {
       if (socket.id === players[i].id) {
         p = players[i];
       }
-    }
+    } 
 
     p.x = data.x;
     p.y = data.y;
@@ -72,12 +74,7 @@ function randomNum() {
 }
 
 function offScreen(laser) {
-  return (
-    laser.x > 600 + this.len ||
-    laser.x < -20 ||
-    laser.y > 600 + this.len ||
-    laser.y < -20
-  );
+  return laser.x > width*3 || laser.x < -width || laser.y > height*3 || laser.y < -height;
 }
 
 // Drugi server
