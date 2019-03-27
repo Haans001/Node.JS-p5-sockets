@@ -9,7 +9,7 @@ var nick = " ";
 function setup() {
   createCanvas(1920, 1000);
   // uruchomienie socket wysyłającego na port 3000
-  socket = io.connect("192.168.207.107:3000");
+  socket = io.connect("https://safe-bayou-67525.herokuapp.com/");
 
   // Gwiazdki <3
   for (let i = 0; i < 300; i++) {
