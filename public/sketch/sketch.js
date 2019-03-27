@@ -4,19 +4,17 @@ var socket;
 var players = [];
 var lasers = [];
 var input, button;
-var name = "Ty";
+var nick = " ";
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight);
-  // Tworzy przycisk oraz input tekstowy
-  // setInput();
+  createCanvas(1920, 1000);
   // uruchomienie socket wysyłającego na port 3000
-  socket = io.connect("192.168.1.103:3000");
+  socket = io.connect("192.168.207.107:3000");
 
   // Gwiazdki <3
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 300; i++) {
     let x = random(-width, width * 3);
-    let y = random(-height,height * 3);
+    let y = random(-height, height * 3);
     let w = random(1, 3);
     let a = map(w, 0.5, 3, 50, 255);
     bg[i] = new Background(x, y, a, w);
@@ -30,7 +28,7 @@ function setup() {
     y: p.pos.y,
     angle: p.angle,
     r: p.r,
-    nick: name
+    nick: nick
   };
 
   socket.emit("start", data);
@@ -46,14 +44,28 @@ function setup() {
 }
 
 function draw() {
+    
+//  if (p.pos.x < 0) {
+//    if (p.pos.y < 0) translate(width / 2, height / 2);
+//    else translate(width / 2, height / 2 - p.pos.y);
+//  } else if (p.pos.y < 0) translate(width / 2 - p.pos.x, height / 2);
   translate(width / 2 - p.pos.x, height / 2 - p.pos.y);
   background(0);
+    
+  //rysowanie brzegów  
+    noFill();
+    stroke(255);
+    console.log(width*4 + "||" + height*4 + "||||||" + p.pos);
+    rect(-width, -height, width*3, height*3);
+
+
+  
   // Gwiazdki <3
   bg.forEach(bg => {
     bg.display();
   });
   // Poruszanie i rysowanie gracza
-  p.run(name);
+  p.run(nick);
 
   // Rysowanie reszty graczy
   for (var i = 0; i < players.length; i++) {
@@ -67,6 +79,9 @@ function draw() {
   // Wyeksportowanie jedynie stanu lokalnego gracza x,y, kąt, nick
   exportPlayerState();
 }
+
+
+
 
 function newDrawing(player) {
   push();
@@ -85,7 +100,7 @@ function newDrawing(player) {
     0,
     (-player.r * 2) / 3
   );
-  pop();
+    pop();
 }
 
 function drawLaser(laser) {
@@ -103,24 +118,14 @@ function exportPlayerState() {
     x: p.pos.x,
     y: p.pos.y,
     angle: p.angle,
-    nick: name
+    nick: nick
   };
   socket.emit("update", data);
 }
 
-function setInput() {
-  input = createInput();
-  input.position(0, 0);
-  button = createButton("submit");
-  button.position(input.x + input.width, 0);
-  button.mousePressed(() => {
-    name = input.value();
-  });
-}
-
 function keyPressed() {
   if (key == " ") {
-    var vel = p5.Vector.fromAngle(p.angle - PI / 2).mult(15);
+    var vel = p5.Vector.fromAngle(p.angle - PI / 2).mult(40);
     var newLaser = {
       id: socket.id,
       velX: vel.x,
@@ -133,10 +138,12 @@ function keyPressed() {
     socket.emit("addLaser", newLaser);
   }
 }
- var submit = document.getElementById('submit');
- var input = document.
- 
- submit.addEventListener('click', function(e){
-    submit.style.opacity = 0;
- });
 
+var input = document.getElementById("input");
+var submit = document.getElementById("submit");
+var form = document.getElementById("form");
+
+submit.addEventListener("click", function() {
+  nick = input.value;
+  form.style.opacity = 0;
+});
