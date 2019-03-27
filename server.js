@@ -15,8 +15,10 @@ function player(id, x, y, r, angle, nick) {
   this.color = [randomNum(), randomNum(), randomNum()];
 }
 
+var port = process.env.PORT || 3000;
+
 var app = express();
-var server = app.listen(3000);
+var server = app.listen(port);
 app.use(express.static("public/sketch"));
 var io = socket(server);
 console.log("Server is running...");
@@ -56,7 +58,7 @@ io.sockets.on("connection", socket => {
       if (socket.id === players[i].id) {
         p = players[i];
       }
-    } 
+    }
 
     p.x = data.x;
     p.y = data.y;
@@ -74,7 +76,12 @@ function randomNum() {
 }
 
 function offScreen(laser) {
-  return laser.x > width*3 || laser.x < -width || laser.y > height*3 || laser.y < -height;
+  return (
+    laser.x > width * 3 ||
+    laser.x < -width ||
+    laser.y > height * 3 ||
+    laser.y < -height
+  );
 }
 
 // Drugi server
