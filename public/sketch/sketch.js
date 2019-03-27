@@ -54,7 +54,7 @@ function draw() {
   //rysowanie brzegów
   noFill();
   stroke(255);
-  console.log(width * 4 + "||" + height * 4 + "||||||" + p.pos);
+  // console.log(width * 4 + "||" + height * 4 + "||||||" + p.pos);
   rect(-width, -height, width * 4, height * 4);
 
   // Gwiazdki <3

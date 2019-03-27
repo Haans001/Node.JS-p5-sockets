@@ -22,6 +22,7 @@ var server = app.listen(port);
 app.use(express.static("public/sketch"));
 var io = socket(server);
 console.log("Server is running...");
+console.log(server.address().address);
 
 function send() {
   io.sockets.emit("get", players);
