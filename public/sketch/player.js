@@ -14,7 +14,7 @@ class Player {
     this.moving();
     this.update();
     this.show(name);
-     this.edges();
+    this.edges();
   }
 
   update() {
@@ -25,9 +25,9 @@ class Player {
   }
 
   edges() {
-   this.pos.x = constrain(this.pos.x, -width+this.r, (width*3)-this.r);
-      
-   this.pos.y = constrain(this.pos.y, -height+this.r, (height*3)-this.r);
+    this.pos.x = constrain(this.pos.x, -width + this.r, width * 3 - this.r);
+
+    this.pos.y = constrain(this.pos.y, -height + this.r, height * 3 - this.r);
   }
 
   show(name) {

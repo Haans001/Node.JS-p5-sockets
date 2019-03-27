@@ -8,7 +8,7 @@ var nick = " ";
 
 function setup() {
   createCanvas(1920, 1000);
-  // uruchomienie socket wysyłającego na port 3000
+  // uruchomienie socket wysyłającego na adres
   socket = io.connect("https://safe-bayou-67525.herokuapp.com/");
 
   // Gwiazdki <3
@@ -33,7 +33,7 @@ function setup() {
 
   socket.emit("start", data);
 
-  // aktuzalizaja stanu wszystkich graczy
+  // aktuzalizaja stanu wszystkich graczyheroku o
   socket.on("get", function(data) {
     players = data;
   });

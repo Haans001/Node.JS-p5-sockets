@@ -1,5 +1,6 @@
 var express = require("express");
 var socket = require("socket.io");
+var player;
 var players = [];
 var lasers = [];
 var width = 1920;
@@ -16,7 +17,6 @@ function player(id, x, y, r, angle, nick) {
 }
 
 var port = process.env.PORT || 3000;
-
 var app = express();
 var server = app.listen(port);
 app.use(express.static("public/sketch"));
@@ -54,6 +54,7 @@ io.sockets.on("connection", socket => {
   });
 
   socket.on("update", data => {
+    if (players.length == 0) return;
     var p;
     for (var i = 0; i < players.length; i++) {
       if (socket.id === players[i].id) {
@@ -70,6 +71,14 @@ io.sockets.on("connection", socket => {
   socket.on("addLaser", data => {
     lasers.push(data);
   });
+
+  socket.on("disconnect", function() {
+    for (var i = 0; i < players.length; i++) {
+      if (players[i].id == socket.id) {
+        players.splice(i, 1);
+      }
+    }
+  });
 });
 
 function randomNum() {
@@ -84,15 +93,3 @@ function offScreen(laser) {
     laser.y < -height
   );
 }
-
-// Drugi server
-// var io_second = require("socket.io-client");
-// var socketSecond = io_second.connect("http://localhost:8080", {
-//   reconnect: true
-// });
-
-// socketSecond.on("connect", () => {
-//   console.log("connected to 4000");
-// });
-
-// socketSecond.emit("msg", "Hello from other server!");
