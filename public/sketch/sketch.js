@@ -44,22 +44,19 @@ function setup() {
 }
 
 function draw() {
-    
-//  if (p.pos.x < 0) {
-//    if (p.pos.y < 0) translate(width / 2, height / 2);
-//    else translate(width / 2, height / 2 - p.pos.y);
-//  } else if (p.pos.y < 0) translate(width / 2 - p.pos.x, height / 2);
+  //  if (p.pos.x < 0) {
+  //    if (p.pos.y < 0) translate(width / 2, height / 2);
+  //    else translate(width / 2, height / 2 - p.pos.y);
+  //  } else if (p.pos.y < 0) translate(width / 2 - p.pos.x, height / 2);
   translate(width / 2 - p.pos.x, height / 2 - p.pos.y);
   background(0);
-    
-  //rysowanie brzegów  
-    noFill();
-    stroke(255);
-    console.log(width*4 + "||" + height*4 + "||||||" + p.pos);
-    rect(-width, -height, width*3, height*3);
 
+  //rysowanie brzegów
+  noFill();
+  stroke(255);
+  console.log(width * 4 + "||" + height * 4 + "||||||" + p.pos);
+  rect(-width, -height, width * 4, height * 4);
 
-  
   // Gwiazdki <3
   bg.forEach(bg => {
     bg.display();
@@ -80,9 +77,6 @@ function draw() {
   exportPlayerState();
 }
 
-
-
-
 function newDrawing(player) {
   push();
   strokeWeight(1);
@@ -100,7 +94,7 @@ function newDrawing(player) {
     0,
     (-player.r * 2) / 3
   );
-    pop();
+  pop();
 }
 
 function drawLaser(laser) {
