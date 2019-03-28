@@ -9,7 +9,7 @@ var nick = " ";
 function setup() {
   createCanvas(1920, 1000);
   // uruchomienie socket wysyłającego na adres
-  socket = io.connect("localhost:3000");
+  socket = io.connect("https://safe-bayou-67525.herokuapp.com/");
 
   // Gwiazdki <3
   for (let i = 0; i < 300; i++) {
@@ -117,15 +117,15 @@ function newDrawing(player) {
   pop();
 }
 
-function drawLaser(laser) {
-  push();
-  translate(laser.x, laser.y);
-  rotate(laser.angle - PI / 2);
-  stroke(232, 41, 44);
-  strokeWeight(3);
-  line(0, 0, 20, 0);
-  pop();
-}
+// function drawLaser(laser) {
+//   push();
+//   translate(laser.x, laser.y);
+//   rotate(laser.angle - PI / 2);
+//   stroke(232, 41, 44);
+//   strokeWeight(3);
+//   line(0, 0, 20, 0);
+//   pop();
+// }
 
 function exportPlayerState() {
   var data = {
