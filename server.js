@@ -26,18 +26,10 @@ console.log(server.address().address);
 
 function send() {
   io.sockets.emit("get", players);
-  for (var i = 0; i < lasers.length; i++) {
-    lasers[i].x += lasers[i].velX * 0.8;
-    lasers[i].y += lasers[i].velY * 0.8;
-
-    if (offScreen(lasers[i])) {
-      lasers.splice(i, 1);
-    }
-  }
   io.sockets.emit("getLasers", lasers);
 }
 
-setInterval(send, 10);
+setInterval(send, 20);
 
 io.sockets.on("connection", socket => {
   console.log("New connection on id: " + socket.id);
@@ -50,6 +42,11 @@ io.sockets.on("connection", socket => {
       data.angle,
       data.nick
     );
+    var l = {
+      id: socket.id,
+      playerLasers: []
+    };
+    lasers.push(l);
     players.push(p);
   });
 
@@ -68,10 +65,13 @@ io.sockets.on("connection", socket => {
     p.nick = data.nick;
   });
 
-  socket.on("addLaser", data => {
-    lasers.push(data);
+  socket.on("updateLasers", data => {
+    for (var i = 0; i < lasers.length; i++) {
+      if (lasers[i].id === socket.id) {
+        lasers[i].playerLasers = data;
+      }
+    }
   });
-
   socket.on("disconnect", function() {
     for (var i = 0; i < players.length; i++) {
       if (players[i].id == socket.id) {
@@ -82,13 +82,4 @@ io.sockets.on("connection", socket => {
 });
 function randomNum() {
   return Math.floor(Math.random() * 255 + 0);
-}
-
-function offScreen(laser) {
-  return (
-    laser.x > width * 3 ||
-    laser.x < -width ||
-    laser.y > height * 3 ||
-    laser.y < -height
-  );
 }

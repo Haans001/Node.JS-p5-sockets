@@ -2,14 +2,14 @@ let p;
 let bg = [];
 var socket;
 var players = [];
-var lasers = [];
 var input, button;
+var otherLasers = [];
 var nick = " ";
 
 function setup() {
   createCanvas(1920, 1000);
   // uruchomienie socket wysyłającego na adres
-  socket = io.connect("https://safe-bayou-67525.herokuapp.com/");
+  socket = io.connect("localhost:3000");
 
   // Gwiazdki <3
   for (let i = 0; i < 300; i++) {
@@ -39,7 +39,7 @@ function setup() {
   });
   // aktualizacja laserow na mapie
   socket.on("getLasers", function(data) {
-    lasers = data;
+    otherLasers = data;
   });
 }
 
@@ -69,12 +69,32 @@ function draw() {
     if (players[i].id === socket.id) continue;
     newDrawing(players[i]);
   }
-  // Rysowanie wszystkich laserow
-  for (var i = 0; i < lasers.length; i++) {
-    drawLaser(lasers[i]);
+  // Rysowanie moich laserow
+  for (var i = 0; i < p.lasers.length; i++) {
+    p.lasers[i].update();
+    p.lasers[i].show();
+    if (p.lasers[i].offScreen()) {
+      p.lasers.splice(i, 1);
+    }
   }
+
+  for (var i = 0; i < otherLasers.length; i++) {
+    if (otherLasers[i].id == socket.id) continue;
+    var playerLasers = otherLasers[i].playerLasers;
+    for (var j = 0; j < playerLasers.length; j++) {
+      push();
+      translate(playerLasers[j].x, playerLasers[j].y);
+      rotate(playerLasers[j].angle);
+      stroke(66, 134, 244);
+      strokeWeight(3);
+      line(0, 0, 20, 0);
+      pop();
+    }
+  }
+
   // Wyeksportowanie jedynie stanu lokalnego gracza x,y, kąt, nick
   exportPlayerState();
+  exportLasers();
 }
 
 function newDrawing(player) {
@@ -113,23 +133,37 @@ function exportPlayerState() {
     y: p.pos.y,
     angle: p.angle,
     nick: nick
+    // lasers: p.lasers
   };
   socket.emit("update", data);
+}
+function exportLasers() {
+  var data = [];
+  for (var i = 0; i < p.lasers.length; i++) {
+    var laser = {
+      x: p.lasers[i].pos.x,
+      y: p.lasers[i].pos.y,
+      angle: p.lasers[i].angle
+    };
+    data.push(laser);
+  }
+  socket.emit("updateLasers", data);
 }
 
 function keyPressed() {
   if (key == " ") {
-    var vel = p5.Vector.fromAngle(p.angle - PI / 2).mult(40);
-    var newLaser = {
-      id: socket.id,
-      velX: vel.x,
-      velY: vel.y,
-      x: p.pos.x,
-      y: p.pos.y,
-      angle: p.angle
-    };
-
-    socket.emit("addLaser", newLaser);
+    // var vel = p5.Vector.fromAngle(p.angle - PI / 2).mult(40);
+    // var newLaser = {
+    //   id: socket.id,
+    //   velX: vel.x,
+    //   velY: vel.y,
+    //   x: p.pos.x,
+    //   y: p.pos.y,
+    //   angle: p.angle
+    // };
+    // socket.emit("addLaser", newLaser);
+    var laser = new Laser(p.pos.x, p.pos.y, p.angle);
+    p.lasers.push(laser);
   }
 }
 

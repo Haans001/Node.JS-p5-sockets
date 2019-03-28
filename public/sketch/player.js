@@ -1,8 +1,10 @@
 class Player {
-  constructor(x, y, r) {
+  constructor(x, y, r, socket) {
     this.pos = createVector(x, y);
     this.acc = createVector();
     this.vel = createVector();
+    this.socket = socket;
+    this.lasers = [];
     // this.width = width;
     // this.height = height;
 
