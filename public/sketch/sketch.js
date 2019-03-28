@@ -45,6 +45,7 @@ function setup() {
     for (var i = 0; i < p.lasers.length; i++) {
       p.lasers[i].update();
     }
+    exportLasers();
   }, 33);
 }
 
@@ -99,7 +100,6 @@ function draw() {
 
   // Wyeksportowanie jedynie stanu lokalnego gracza x,y, kąt, nick
   exportPlayerState();
-  exportLasers();
 }
 
 function newDrawing(player) {
