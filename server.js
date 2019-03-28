@@ -80,7 +80,6 @@ io.sockets.on("connection", socket => {
     }
   });
 });
-
 function randomNum() {
   return Math.floor(Math.random() * 255 + 0);
 }
