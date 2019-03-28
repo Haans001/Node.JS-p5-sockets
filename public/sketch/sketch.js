@@ -41,6 +41,11 @@ function setup() {
   socket.on("getLasers", function(data) {
     otherLasers = data;
   });
+  setInterval(function() {
+    for (var i = 0; i < p.lasers.length; i++) {
+      p.lasers[i].update();
+    }
+  }, 33);
 }
 
 function draw() {
@@ -71,7 +76,7 @@ function draw() {
   }
   // Rysowanie moich laserow
   for (var i = 0; i < p.lasers.length; i++) {
-    p.lasers[i].update();
+    // p.lasers[i].update();
     p.lasers[i].show();
     if (p.lasers[i].offScreen()) {
       p.lasers.splice(i, 1);
