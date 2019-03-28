@@ -76,7 +76,6 @@ io.sockets.on("connection", socket => {
     for (var i = 0; i < players.length; i++) {
       if (players[i].id == socket.id) {
         players.splice(i, 1);
-        lasers.splice(i, 1);
       }
     }
   });
